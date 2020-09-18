@@ -1,0 +1,76 @@
+<meta charset="UTF-8">
+<head> <!-- write the header -->
+    <title>Target shooting</title>
+    <h1>Aim and shoot</h1>
+
+
+</head>
+
+<body> <!-- here goes the canva -->
+
+    <canvas width="600" height="400"></canvas>
+
+    <script>
+        
+    var canva = document.querySelector("canvas");
+    var brush = canva.getContext("2d");
+    brush.fillStyle = "white";
+    brush.fillRect(0, 0, 600, 400);
+    
+        
+    var radius = 10;
+    var xAleatorio;
+    var yAleatorio;
+
+    function clearScreen (){
+        brush.clearRect(0, 0, 600, 400);
+    }
+
+    function drawCircle(x, y, radius, color) {
+        brush.fillStyle = color;
+        brush.beginPath();
+        brush.arc(x, y, radius, 0, 2 * Math.PI);
+        brush.fill();
+    }
+    
+    function drawAlvo(x,y){
+        drawCircle(x, y, radius + 20, 'red'); // maior círculo
+        drawCircle(x, y, radius + 10, 'white');
+        drawCircle(x, y, radius, 'red'); // menor circulo
+
+    }
+
+    function sorteiaPosition (maximo) {
+        return Math.floor(Math.random()*maximo);
+    }
+
+
+    
+    function piscar (){
+        clearScreen();
+        xAleatorio = sorteiaPosition(600);
+        yAleatorio = sorteiaPosition(400);
+        drawAlvo(xAleatorio, yAleatorio);
+
+    }
+
+    function shoot(event) {
+        var x = event.pageX - canva.offsetLeft;
+        var y = event.pageY - canva.offsetTop;
+
+        if((x > xAleatorio - radius) 
+                && (x < xAleatorio + radius) 
+                && (y > yAleatorio - radius) 
+                && (y < yAleatorio + radius)) {
+
+            alert("Você acertou o alvo!");
+        }
+    }
+
+    canva.onclick = shoot;
+    setInterval(piscar, 1000);
+    
+        
+
+    </script>
+</body>
